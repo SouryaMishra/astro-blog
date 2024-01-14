@@ -1,0 +1,57 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import MainLayout from "../../layouts/MainLayout.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import SearchForm from "../../components/SearchForm.astro";
+
+const query = Astro.url.searchParams.get("query");
+
+const allBlogArticles: CollectionEntry<"blog">[] = await getCollection("blog");
+
+const searchResults =
+  query && query.trim()
+    ? allBlogArticles.filter((article) => {
+        const titleMatch = article.data.title
+          .toLowerCase()
+          .includes(query.trim().toLowerCase());
+
+        const bodyMatch = article.body
+          .toLowerCase()
+          .includes(query.trim().toLowerCase());
+
+        const slugMatch = article.slug
+          .toLowerCase()
+          .includes(query.trim().toLowerCase());
+
+        const tagMatch = article.data.tags.includes(query.trim().toLowerCase());
+
+        return titleMatch || bodyMatch || slugMatch || tagMatch;
+      })
+    : allBlogArticles;
+---
+
+<MainLayout title="Search results">
+  <a
+    href="/articles"
+    class="inline-block bg-gray-100 p-2 mb-5 hover:bg-indigo-500 hover:text-white"
+    >All Articles</a
+  >
+  <SearchForm />
+  <br />
+  <h1 class="text-2xl pb-3 mt-6">Results For <strong>{query}</strong></h1>
+  {
+    searchResults.length === 0 ? (
+      <p>
+        No matching articles found. Please try again with a different search
+        keyword
+      </p>
+    ) : (
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {searchResults.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+    )
+  }
+</MainLayout>
