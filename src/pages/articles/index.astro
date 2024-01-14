@@ -4,11 +4,30 @@ import type { CollectionEntry } from "astro:content";
 import MainLayout from "../../layouts/MainLayout.astro";
 import ArticleCard from "../../components/ArticleCard.astro";
 import SearchForm from "../../components/SearchForm.astro";
+import Pagination from "../../components/Pagination.astro";
+import { ARTICLES_PER_PAGE } from "../../constants";
 import { sort } from "../../utils";
 
 const allBlogArticles: CollectionEntry<"blog">[] = sort(
   await getCollection("blog")
 );
+
+const pageFromQuery = Astro.url.searchParams.get("page");
+const currentPage = pageFromQuery === null ? 1 : Number(pageFromQuery);
+const totalPages = Math.ceil(allBlogArticles.length / ARTICLES_PER_PAGE);
+
+const articlesForCurrentPage = allBlogArticles.slice(
+  (currentPage - 1) * ARTICLES_PER_PAGE,
+  currentPage * ARTICLES_PER_PAGE
+);
+
+if (
+  currentPage <= 0 ||
+  isNaN(currentPage) ||
+  !Number.isInteger(currentPage) ||
+  currentPage > totalPages
+)
+  return Astro.redirect("/articles");
 ---
 
 <MainLayout>
@@ -16,22 +35,8 @@ const allBlogArticles: CollectionEntry<"blog">[] = sort(
   <SearchForm />
   <!-- Main Grid -->
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    {allBlogArticles.map((article) => <ArticleCard article={article} />)}
+    {articlesForCurrentPage.map((article) => <ArticleCard article={article} />)}
   </div>
 
-  <!-- Pagination -->
-  <div class="flex justify-between mt-10">
-    <a
-      href="#"
-      class="inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"
-    >
-      Previous
-    </a>
-    <a
-      href="#"
-      class="inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"
-    >
-      Next
-    </a>
-  </div>
+  <Pagination currentPage={currentPage} totalPages={totalPages} />
 </MainLayout>

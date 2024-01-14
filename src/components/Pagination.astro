@@ -1,0 +1,32 @@
+---
+const { currentPage, totalPages } = Astro.props;
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+}
+
+const isPrevDisabled = currentPage === 1;
+const isNextDisabled = currentPage === totalPages;
+---
+
+<div class="flex justify-between mt-10">
+  <a
+    tabindex={isPrevDisabled ? -1 : 0}
+    href={"/articles?page=" + (currentPage - 1)}
+    class={isPrevDisabled
+      ? "inline-block bg-gray-100 px-3 py-2 text-gray-400 rounded-lg pointer-events-none"
+      : "inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"}
+  >
+    Previous
+  </a>
+  <a
+    tabindex={isNextDisabled ? -1 : 0}
+    href={"/articles?page=" + (currentPage + 1)}
+    class={isNextDisabled
+      ? "inline-block bg-gray-100 px-3 py-2 text-gray-400 rounded-lg pointer-events-none"
+      : "inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"}
+  >
+    Next
+  </a>
+</div>
