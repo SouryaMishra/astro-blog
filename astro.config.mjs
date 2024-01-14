@@ -8,5 +8,7 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   integrations: [tailwind(), mdx()],
   output: "server",
-  adapter: vercel()
+  adapter: vercel({
+    imageService: true,
+  }),
 });
