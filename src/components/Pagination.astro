@@ -15,8 +15,8 @@ const isNextDisabled = currentPage === totalPages;
     tabindex={isPrevDisabled ? -1 : 0}
     href={"/articles?page=" + (currentPage - 1)}
     class={isPrevDisabled
-      ? "inline-block bg-gray-100 px-3 py-2 text-gray-400 rounded-lg pointer-events-none"
-      : "inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"}
+      ? "inline-block border-2 bg-gray-100 px-3 py-2 text-gray-400 rounded-md pointer-events-none"
+      : "inline-block border-2 bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-md"}
   >
     Previous
   </a>
@@ -24,8 +24,8 @@ const isNextDisabled = currentPage === totalPages;
     tabindex={isNextDisabled ? -1 : 0}
     href={"/articles?page=" + (currentPage + 1)}
     class={isNextDisabled
-      ? "inline-block bg-gray-100 px-3 py-2 text-gray-400 rounded-lg pointer-events-none"
-      : "inline-block bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-lg"}
+      ? "inline-block border-2 bg-gray-100 px-3 py-2 text-gray-400 rounded-md pointer-events-none"
+      : "inline-block border-2 bg-indigo-100 px-3 py-2 hover:bg-indigo-600 hover:text-white rounded-md"}
   >
     Next
   </a>
