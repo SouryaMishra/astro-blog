@@ -52,17 +52,8 @@ const { Content } = await entry.render();
       alt="Article Image"
       class="my-6 w-full h-auto rounded-xl mb-6"
     />
-    <Content />
+    <div class="prose prose-xl max-w-none">
+      <Content />
+    </div>
   </article>
 </MainLayout>
-
-<style is:global>
-  p,
-  h2 {
-    margin: 20px 0;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-  }
-</style>
